@@ -3,6 +3,18 @@
 
 [<EntryPoint>]
 let main argv = 
+    let stopWatch = System.Diagnostics.Stopwatch.StartNew()
+    let value = Seq.unfold (fun (current, old) -> 
+                    if (current > 4000000) then None 
+                    else Some(current + old, (current + old, current))) (1, 1)
+                //|> Seq.map (fun x -> fibonacci x)
+                |> Seq.filter (fun x -> x % 2 = 0)
+                |> Seq.sum
+    stopWatch.Stop()
+    printfn "The value is %d and it took %f" value stopWatch.Elapsed.TotalMilliseconds //About 5 ms
+
+    stopWatch.Reset()
+
     let rec fibonacci x = 
         if x = 0 then
             1
@@ -10,11 +22,13 @@ let main argv =
             1
         else
             fibonacci (x-1) + fibonacci (x-2)
-    
-    let value = [1..32]
+
+    stopWatch.Start()
+    let value2 =[1..32] 
                 |> List.map (fun x -> fibonacci x)
                 |> List.filter (fun x -> x % 2 = 0)
                 |> List.sum
-    
-    printfn "The value is %d." value
+
+    stopWatch.Stop()
+    printfn "The value2 is %d and it took %f" value stopWatch.Elapsed.TotalMilliseconds //About 92 ms
     0 // return an integer exit code
