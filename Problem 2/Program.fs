@@ -4,14 +4,14 @@
 [<EntryPoint>]
 let main argv = 
     let stopWatch = System.Diagnostics.Stopwatch.StartNew()
-    let value = Seq.unfold (fun (current, old) -> 
+    let value = (1, 1)
+                |>Seq.unfold (fun (current, old) -> 
                     if (current > 4000000) then None 
-                    else Some(current + old, (current + old, current))) (1, 1)
-                //|> Seq.map (fun x -> fibonacci x)
+                    else Some(current + old, (current + old, current))) 
                 |> Seq.filter (fun x -> x % 2 = 0)
                 |> Seq.sum
     stopWatch.Stop()
-    printfn "The value is %d and it took %f" value stopWatch.Elapsed.TotalMilliseconds //About 5 ms
+    printfn "The value is %d and it took %f" value stopWatch.Elapsed.TotalMilliseconds //About 4 ms
 
     stopWatch.Reset()
 
