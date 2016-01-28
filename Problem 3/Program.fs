@@ -6,7 +6,7 @@ open System.Diagnostics
 let main argv = 
     let stopWatch = Stopwatch.StartNew()
     
-    let maxPossiblePrime (x:int64) =
+    let maxSearchPrime (x:int64) =
         if x > 10L then
             int64(System.Math.Round (sqrt (float x)))
         else 
@@ -16,7 +16,7 @@ let main argv =
         if x <= 1L then
             None
         else
-            let PartialDivisors = {2L..(maxPossiblePrime x)}
+            let PartialDivisors = {2L..(maxSearchPrime x)}
                                 |> Seq.filter (fun i -> x % i = 0L)
 
             let Divisors = Seq.append  (PartialDivisors|> Seq.map (fun i -> x/i)) PartialDivisors
@@ -36,7 +36,7 @@ let main argv =
     let getPrimeFactors (x:int64) =
         let factors = getFactors x
         if factors.IsNone then
-            Seq.singleton x
+            Seq.singleton x //x is a prime number
         else
             factors.Value
             |> Seq.filter (fun i -> isPrime i = true)
